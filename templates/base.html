@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0f5d50">
+  <title>{% block title %}DukaanFlow AI{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <script defer src="{{ url_for('static', filename='app.js') }}"></script>
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+    <a class="brand" href="{{ url_for('dashboard') }}"><span class="brand-mark"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M8 18 20 8l12 10v14H8z"/><path d="M15 32V21h10v11"/><path d="m14 15 3 3 7-7"/></svg></span><span><strong>DukaanFlow</strong><small>AI ORDER DESK</small></span></a>
+    <div class="workspace-label">WORKSPACE</div>
+    <nav class="nav-list"><a class="nav-item active" href="{{ url_for('dashboard') }}"><span>▦</span> Overview</a><a class="nav-item" href="#requests"><span>◷</span> Message requests <span class="nav-count">{{ stats.pending_requests if stats is defined else '' }}</span></a><a class="nav-item" href="#customers"><span>♙</span> Customers</a><a class="nav-item" href="#skips"><span>✓</span> Delivery skips</a></nav>
+    <div class="sidebar-bottom"><div class="privacy-icon">◉</div><strong>Local-first by design</strong><p>Customer messages stay on your server. Optional AI processing can run locally with Ollama.</p><div class="sidebar-version">MVP PREVIEW <span>v0.1.0</span></div></div>
+  </aside>
+  <main class="main-area">
+    <header class="topbar"><div class="mobile-brand">DukaanFlow <span>AI</span></div><div class="breadcrumbs">Workspace <span>/</span> <strong>{% block crumb %}Overview{% endblock %}</strong></div><div class="topbar-actions"><span class="system-status"><i></i> {{ 'Dashboard protected' if admin_password_set else 'Local demo mode' }}</span>{% if admin_password_set %}<form method="post" action="{{ url_for('logout') }}"><button class="icon-button" type="submit" title="Log out">⇥</button></form>{% else %}<span class="avatar">DF</span>{% endif %}</div></header>
+    {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<div class="flash-list">{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}{% endwith %}
+    {% block content %}{% endblock %}
+    <footer class="footer"><span>© 2026 DukaanFlow AI</span><span>Built for small food businesses <b>·</b> Human confirmation required</span></footer>
+  </main>
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body></html>
