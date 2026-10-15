@@ -1,4 +1,4 @@
-name: Deploy DukaanFlow AI website
+name: Deploy DukaanFlow AI website (docs only)
 
 on:
   push:
